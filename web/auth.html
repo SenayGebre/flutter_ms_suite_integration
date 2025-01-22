@@ -1,0 +1,35 @@
+<!-- web/auth.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication Callback</title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            // Get the authentication response from the URL
+            const params = new URLSearchParams(window.location.hash.substring(1));
+            const accessToken = params.get('access_token');
+            const error = params.get('error');
+
+            if (accessToken) {
+                // Send message to main window
+                window.opener.postMessage({
+                    'type': 'ms_auth',
+                    'access_token': accessToken
+                }, '*');
+            } else if (error) {
+                window.opener.postMessage({
+                    'type': 'ms_auth',
+                    'error': error
+                }, '*');
+            }
+
+            // Close this window if it was opened as a popup
+            if (window.opener) {
+                window.close();
+            }
+        };
+    </script>
+</body>
+</html>
