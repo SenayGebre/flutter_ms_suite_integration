@@ -18,7 +18,7 @@ class _MSAccountLinkScreenState extends State<MSAccountLinkScreen> {
   @override
   void initState() {
     super.initState();
-    _checkExistingLink();
+    // _checkExistingLink();
   }
 
   Future<void> _checkExistingLink() async {
@@ -110,13 +110,13 @@ class _MSAccountLinkScreenState extends State<MSAccountLinkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_checkingExistingLink) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
+    // if (_checkingExistingLink) {
+    //   return Scaffold(
+    //     body: Center(
+    //       child: CircularProgressIndicator(),
+    //     ),
+    //   );
+    // }
 
     final user = _customAuth.currentUser;
     final theme = Theme.of(context);

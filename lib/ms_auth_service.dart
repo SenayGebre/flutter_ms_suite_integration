@@ -4,8 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:universal_html/html.dart' as html;
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
+import 'package:ms_suite/main.dart';
 
 // Custom exceptions for better error handling
 class MSAuthException implements Exception {
@@ -70,22 +72,30 @@ class MSAuthService {
     _initializeOAuth();
   }
 
-  void _initializeOAuth() {
+  void _initializeOAuth() async {
     final config = Config(
-      tenant: 'YOUR_TENANT_ID',
-      clientId: 'YOUR_CLIENT_ID',
+      tenant: '628e5b42-58ff-4fe8-aed5-c7652f22a45d',
+      clientId: 'd049a385-5fe8-4b20-827b-5632745cc8cd',
       scope: 'User.Read Calendars.ReadWrite',
       // Web-specific redirect URI
       redirectUri: kIsWeb
-          ? 'http://localhost:3000/auth.html' // Development
+          ? 'http://localhost:3000/callback' // Development
           // ? 'https://your-domain.com/auth.html'  // Production
           : 'msauth://YOUR_PACKAGE_NAME/callback',
       // Web-specific settings
       webUseRedirect: true, // Use redirect instead of popup for web
       // Optional: Configure prompt behavior
-      prompt: 'select_account', navigatorKey: GlobalKey<NavigatorState>(),
+      prompt: 'select_account', navigatorKey: navigatorKey,
     );
     _oauth = AadOAuth(config);
+
+    // try {
+    //   await Future.delayed(
+    //       Duration(seconds: 3)); // Simulate initialization delay
+    //   await _oauth.login();
+    // } catch (e) {
+    //   print('Initialization error: $e');
+    // }
   }
 
   // Initialize the service and restore session if available
@@ -155,6 +165,7 @@ class MSAuthService {
       final newToken = await _oauth.getAccessToken();
 
       if (newToken == null) {
+        // logout();
         throw MSAuthException('Failed to refresh token');
       }
 
@@ -242,5 +253,77 @@ class MSAuthService {
       print('Error during logout: $e');
       rethrow;
     }
+  }
+
+  Future<void> handleMsAuthChange() async {
+    var uri = Uri.parse(html.window.location.href);
+    print(uri);
+    print(uri.queryParameters['code']);
+    // if (uri.queryParameters['code'] != null) {
+    //   await _oauth.getToken(uri.queryParameters['code']);
+    //   await _storeAuthData(await _oauth.getAccessToken());
+    //   await _fetchUserProfile(await _oauth.getAccessToken());
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['error'] != null) {
+    //   print('Error: ${uri.queryParameters['error']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['error_description'] != null) {
+    //   print('Error Description: ${uri.queryParameters['error_description']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['error_uri'] != null) {
+    //   print('Error URI: ${uri.queryParameters['error_uri']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['state'] != null) {
+    //   print('State: ${uri.queryParameters['state']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['session_state'] != null) {
+    //   print('Session State: ${uri.queryParameters['session_state']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['prompt'] != null) {
+    //   print('Prompt: ${uri.queryParameters['prompt']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['client-request-id'] != null) {
+    //   print('Client Request ID: ${uri.queryParameters['client-request-id']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['client_id'] != null) {
+    //   print('Client ID: ${uri.queryParameters['client_id']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['redirect_uri'] != null) {
+    //   print('Redirect URI: ${uri.queryParameters['redirect_uri']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['response_mode'] != null) {
+    //   print('Response Mode: ${uri.queryParameters['response_mode']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['response_type'] != null) {
+    //   print('Response Type: ${uri.queryParameters['response_type']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
+
+    // if (uri.queryParameters['scope'] != null) {
+    //   print('Scope: ${uri.queryParameters['scope']}');
+    //   html.window.history.pushState({}, '', uri.path);
+    // }
   }
 }

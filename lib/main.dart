@@ -4,6 +4,7 @@ import 'package:ms_suite/create_meeting_screen.dart';
 import 'package:ms_suite/login.dart';
 import 'package:ms_suite/ms_account_link.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   runApp(MyApp());
 }
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Bank Meeting Scheduler',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -22,7 +24,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginScreen(),
         '/ms-link': (context) => MSAccountLinkScreen(),
-        '/create-meeting': (context) => CreateMeetingScreen(), // We'll create this next
+        '/create-meeting': (context) =>
+            CreateMeetingScreen(), // We'll create this next
       },
     );
   }

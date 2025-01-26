@@ -1,5 +1,8 @@
 // lib/screens/auth/login_screen.dart
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ms_suite/ms_auth_service.dart';
+
 // lib/models/user.dart
 class User {
   final String id;
@@ -50,8 +53,6 @@ class CustomAuthService {
   }
 }
 
-
-
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -61,8 +62,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _msAuthService = MSAuthService();
   bool _isLoading = false;
   String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _msAuthService.handleMsAuthChange();
+  }
 
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return;
@@ -78,8 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       );
 
-      if (success) {
-        Navigator.of(context).pushReplacementNamed('/home');
+      if (kDebugMode || success) {
+        Navigator.of(context).pushReplacementNamed('/ms-link');
       } else {
         setState(() {
           _errorMessage = 'Invalid email or password';
@@ -189,4 +197,3 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 }
-

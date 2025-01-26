@@ -4,7 +4,8 @@
 
 <head>
   <!-- Add these meta tags for Microsoft authentication -->
-  <base href="/"> <meta charset="UTF-8">
+  <base href="/">
+  <meta charset="UTF-8">
   <meta name="ms-client-id" content="YOUR_CLIENT_ID" />
   <meta name="ms-redirect-uri" content="http://localhost:3000/auth.html" />
 
@@ -24,6 +25,11 @@
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Committee Meeting Scheduler</title>
+  <link rel="manifest" href="manifest.json">
+  <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.13.1/js/msal-browser.min.js"
+    integrity="sha384-2Vr9MyareT7qv+wLp1zBt78ZWB4aljfCTMUrml3/cxm0W81ahmDOC6uyNmmn0Vrc"
+    crossorigin="anonymous"></script>
+  <script src="assets/packages/aad_oauth/assets/msalv2.js"></script>
   <link rel="manifest" href="manifest.json">
 </head>
 
@@ -52,22 +58,13 @@
   <!-- Your existing body content -->
   <script src="flutter.js" defer></script>
   <script>
-    window.addEventListener('load', function (ev) {
-      {{flutter_js}}
-      {{flutter_build_config}}
-      // Download main.dart.js
-      _flutter.loader.load({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: async function (engineInitializer) {
-          engineInitializer.initializeEngine().then(function (appRunner) {
-            appRunner.runApp();
-          });
-        }
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
       });
-    });
+    }
   </script>
+  <script src="main.dart.js" type="application/javascript"></script>
 
 </body>
 
