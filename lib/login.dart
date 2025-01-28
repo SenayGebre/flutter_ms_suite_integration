@@ -2,6 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ms_suite/ms_auth_service.dart';
+import 'package:universal_html/html.dart' as html;
 
 // lib/models/user.dart
 class User {
@@ -69,10 +70,14 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _msAuthService.handleMsAuthChange();
+    var uri = Uri.parse(html.window.location.href);
+    print(uri);
   }
 
   Future<void> _handleLogin() async {
+    Navigator.of(context).pushReplacementNamed('/ms-link');
+    return;
+
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {

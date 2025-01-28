@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:ms_suite/login.dart';
 import 'package:ms_suite/ms_auth_service.dart';
+import 'package:universal_html/html.dart' as html;
 
 class MSAccountLinkScreen extends StatefulWidget {
   @override
@@ -18,6 +19,9 @@ class _MSAccountLinkScreenState extends State<MSAccountLinkScreen> {
   @override
   void initState() {
     super.initState();
+
+    var uri = Uri.parse(html.window.location.href);
+    print(uri);
     // _checkExistingLink();
   }
 

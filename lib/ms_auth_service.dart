@@ -75,7 +75,7 @@ class MSAuthService {
   void _initializeOAuth() async {
     final config = Config(
       tenant: '628e5b42-58ff-4fe8-aed5-c7652f22a45d',
-      clientId: 'd049a385-5fe8-4b20-827b-5632745cc8cd',
+      clientId: '625a3fb5-9bea-439f-a16c-ff17c4efb9bb',
       scope: 'User.Read Calendars.ReadWrite',
       // Web-specific redirect URI
       redirectUri: kIsWeb
@@ -126,6 +126,8 @@ class MSAuthService {
       // Start OAuth flow
       await _oauth.login();
       final token = await _oauth.getAccessToken();
+      print("senay");
+      print(token);
 
       if (token == null) {
         throw MSAuthException('Failed to obtain access token');
