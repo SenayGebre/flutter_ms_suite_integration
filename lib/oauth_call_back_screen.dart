@@ -15,30 +15,30 @@ class _OAuthCallbackScreenState extends State<OAuthCallbackScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    var urii = Uri.parse(html.window.location.href);
-    print(urii);
+    // var urii = Uri.parse(html.window.location.href);
+    // print("#######" + urii.toString());
 
     // Listen for postMessage events
-    html.window.onMessage.listen((event) {
-      try {
-        // Parse the message
-        final message = jsonDecode(event.data);
+    // html.window.onMessage.listen((event) {
+    //   try {
+    //     // Parse the message
+    //     final message = jsonDecode(event.data);
 
-        if (message['type'] == 'oauthCallback') {
-          final String? code = message['code'];
-          final String? state = message['state'];
+    //     if (message['type'] == 'oauthCallback') {
+    //       final String? code = message['code'];
+    //       final String? state = message['state'];
 
-          if (code != null) {
-            print('Authorization Code: $code');
-            // Perform token exchange or navigate to another screen
-          } else {
-            print('Authorization Code not found in the callback');
-          }
-        }
-      } catch (e) {
-        print('Error parsing callback message: $e');
-      }
-    });
+    //       if (code != null) {
+    //         print('Authorization Code: $code');
+    //         // Perform token exchange or navigate to another screen
+    //       } else {
+    //         print('Authorization Code not found in the callback');
+    //       }
+    //     }
+    //   } catch (e) {
+    //     print('Error parsing callback message: $e');
+    //   }
+    // });
 
     // Fallback: Read query parameters directly from the URL
     final uri = Uri.parse(html.window.location.href);
